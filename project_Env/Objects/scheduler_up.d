@@ -1,0 +1,16 @@
+.\objects\scheduler_up.o: rt-thread\src\scheduler_up.c
+.\objects\scheduler_up.o: rt-thread\include\rtthread.h
+.\objects\scheduler_up.o: .\rtconfig.h
+.\objects\scheduler_up.o: rt-thread\include\rtdebug.h
+.\objects\scheduler_up.o: rt-thread\include\rtdef.h
+.\objects\scheduler_up.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\scheduler_up.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\scheduler_up.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\scheduler_up.o: rt-thread\components\libc\compilers\common\extension\sys/types.h
+.\objects\scheduler_up.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\time.h
+.\objects\scheduler_up.o: rt-thread\include\rtservice.h
+.\objects\scheduler_up.o: rt-thread\include\rtm.h
+.\objects\scheduler_up.o: rt-thread\include\rtthread.h
+.\objects\scheduler_up.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\scheduler_up.o: rt-thread\components\finsh\finsh.h
+.\objects\scheduler_up.o: rt-thread\include\rthw.h

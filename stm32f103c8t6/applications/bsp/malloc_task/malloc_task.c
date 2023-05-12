@@ -5,13 +5,16 @@
  * @file      malloc_task.c
  * @author    wj (tjwangj@126.com)
  * @version   V0.1
- * @date      2023-05-06
- * @brief 
+ * @date      2023-05-08
+ * @brief     
  * 
  * **********************************************************************************
  */
 #include "malloc_task.h"
 #include <rtthread.h>
+#include <rtdevice.h>
+#include "drv_common.h"
+
 
 #define MALLOC_TASK_PRIORITY     24
 #define MALLOC_TASK_STACK_SIZE   256
@@ -19,31 +22,48 @@
 
 static rt_thread_t t_malloc_task = RT_NULL;
 
+#define LED1_PIN    GET_PIN(A, 2)
+
 /**
- * @brief 线程1的入口函数
- * @param  parameter        参数
+ * @brief  线程1的入口函数
+ * @param  parameter        My Param doc
  */
 static void malloc_task_entry(void * parameter)
 {
     rt_uint32_t index = 0;
+    rt_pin_mode(LED1_PIN, PIN_MODE_OUTPUT);
+    rt_err_t retval = RT_EOK;
 
     while(1)
     {
-        if(index < 10)
-        {
-            rt_kprintf("malloc task count: %d\n", index++);
-        }
-
+        rt_pin_write(LED1_PIN, PIN_LOW);
         rt_thread_mdelay(500);
+        rt_pin_write(LED1_PIN, PIN_HIGH);
+        rt_thread_mdelay(500);
+
+        rt_kprintf("malloc_task count: %d\n", index++);
+
+        if(5 == index)
+        {
+            //retval = rt_thread_detach(t_malloc_task);
+
+            retval = rt_thread_delete(t_malloc_task);
+
+            if(RT_EOK == retval)
+                rt_kprintf("delete malloc_task successful!\n");
+            else
+                rt_kprintf("delete malloc_task failed!\n");
+        }
     }
 }
 
 
 /**
- * @brief 创建malloc_task_sample，并启动
+ * @brief  创建malloc_task_sample，并启动
  * @return int 
  */
 int malloc_task_sample(void)
+
 {
     /* 初始化线程1, 名称是static_task, 入口是static_task_entry */
     t_malloc_task = rt_thread_create("malloc_task",
@@ -60,5 +80,5 @@ int malloc_task_sample(void)
     return 0;
 }
 
-/* 导出到msh命令列表 */
-MSH_CMD_EXPORT(malloc_task_sample, run malloc task);
+ /* 导出到msh命令列表 */
+ MSH_CMD_EXPORT(malloc_task_sample, create & delete malloc task);

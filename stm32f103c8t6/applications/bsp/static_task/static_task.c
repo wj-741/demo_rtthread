@@ -5,16 +5,19 @@
  * @file      static_task.c
  * @author    wj (tjwangj@126.com)
  * @version   V0.1
- * @date      2023-05-06
- * @brief 
+ * @date      2023-05-08
+ * @brief     
  * 
  * **********************************************************************************
  */
 #include "static_task.h"
 #include <rtthread.h>
+#include <rtdevice.h>
+#include "drv_common.h"
+
 
 #define STATIC_TASK_PRIORITY     25
-#define STATIC_TASK_STACK_SIZE   512
+#define STATIC_TASK_STACK_SIZE   256
 #define STATIC_TASK_TIMESLICE    5
 
 
@@ -23,28 +26,29 @@ ALIGN(RT_ALIGN_SIZE)
 static rt_uint8_t static_task_stack[STATIC_TASK_STACK_SIZE];    // 提前分配任务栈空间
 static struct rt_thread static_task;
 
+#define LED2_PIN    GET_PIN(A, 1)
+
+
 /**
- * @brief 线程1的入口函数
- * @param  parameter        参数
+ * @brief  线程1的入口函数
+ * @param  parameter        My Param doc
  */
 static void static_task_entry(void * parameter)
 {
-    rt_uint32_t index = 0;
-
+    //rt_uint32_t index = 0;
+    rt_pin_mode(LED2_PIN, PIN_MODE_OUTPUT);
     while(1)
     {
-        if(index < 10)
-        {
-            rt_kprintf("static task count: %d\n", index++);
-        }
-
-        rt_thread_mdelay(500);
+        //rt_kprintf("static task count: %d\n", index++);
+        rt_pin_write(LED2_PIN, PIN_HIGH);
+        rt_thread_mdelay(200);
+        rt_pin_write(LED2_PIN, PIN_LOW);
+        rt_thread_mdelay(300);
     }
 }
 
-
 /**
- * @brief 创建static_task_sample，并启动
+ * @brief  创建static_task_sample，并启动
  * @return int 
  */
 int static_task_sample(void)
